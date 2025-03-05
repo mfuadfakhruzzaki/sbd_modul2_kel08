@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tambah Mata Kuliah</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        color: #343a40;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        margin-top: 60px;
+        max-width: 600px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #343a40;
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+
+      .form-group label {
+        font-weight: 500;
+      }
+
+      .form-group input {
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        padding: 12px 20px;
+        font-size: 16px;
+        background-color: #ffffff;
+        color: #495057;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input::placeholder {
+        color: #6c757d;
+      }
+
+      .form-group input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+
+      .btn-submit {
+        border-radius: 8px;
+        background-color: #007bff;
+        color: white;
+        padding: 15px;
+        font-weight: 600;
+        border: none;
+        width: 100%;
+        transition: background-color 0.3s ease;
+        margin-bottom: 25px;
+      }
+
+      .btn-submit:hover {
+        background-color: #0056b3;
+      }
+
+      .btn-back {
+        border-radius: 8px;
+        background-color: #6c757d;
+        color: white;
+        padding: 15px;
+        font-weight: 600;
+        border: none;
+        width: 100%;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-back:hover {
+        background-color: #5a6268;
+        color: white;
+      }
+
+      /* Responsiveness */
+      @media (max-width: 768px) {
+        .form-group input {
+          font-size: 14px;
+        }
+
+        .btn-submit,
+        .btn-back {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Tambah Mata Kuliah</h1>
+
+      <form action="/matakuliah/add" method="post">
+        <div class="form-group">
+          <label for="kodeMk">Kode Mata Kuliah</label>
+          <input
+            type="text"
+            class="form-control"
+            id="kodeMk"
+            name="kodeMk"
+            required
+            placeholder="Masukkan Kode Mata Kuliah"
+          />
+        </div>
+        <div class="form-group">
+          <label for="namaMk">Nama Mata Kuliah</label>
+          <input
+            type="text"
+            class="form-control"
+            id="namaMk"
+            name="namaMk"
+            required
+            placeholder="Masukkan Nama Mata Kuliah"
+          />
+        </div>
+        <div class="form-group">
+          <label for="sks">SKS</label>
+          <input
+            type="number"
+            class="form-control"
+            id="sks"
+            name="sks"
+            required
+            min="1"
+            max="6"
+            placeholder="Masukkan Jumlah SKS"
+          />
+        </div>
+        <div class="form-group">
+          <label for="dosen">Dosen</label>
+          <input
+            type="text"
+            class="form-control"
+            id="dosen"
+            name="dosen"
+            required
+            placeholder="Masukkan Nama Dosen"
+          />
+        </div>
+        <button type="submit" class="btn-submit">Submit</button>
+      </form>
+
+      <!-- Link to return to the courses list -->
+      <a href="/matakuliah" class="btn-back">Kembali</a>
+    </div>
+
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+  </body>
+</html>

@@ -118,6 +118,16 @@
         background-color: #c82333; /* Darker red on hover */
       }
 
+      .btn-detail {
+        background-color: #17a2b8; /* Cyan for detail button */
+        color: white;
+      }
+
+      .btn-detail:hover {
+        background-color: #138496; /* Darker cyan on hover */
+        color: white;
+      }
+
       .btn-add {
         border-radius: 8px;
         font-weight: 800;
@@ -168,8 +178,16 @@
         </form>
       </div>
 
+      <!-- Navigation -->
+      <div class="d-flex mb-3">
+        <a href="/matakuliah" class="btn btn-info mr-2" style="flex: 1"
+          >Kelola Mata Kuliah</a
+        >
+        <a href="/irs" class="btn btn-secondary" style="flex: 1">Kelola IRS</a>
+      </div>
+
       <!-- Tambah Mahasiswa -->
-      <div class="mb-3 mt-1">
+      <div class="mb-3 mt-3">
         <a href="/add" class="btn btn-add w-100">Tambah Mahasiswa</a>
       </div>
 
@@ -199,6 +217,11 @@
                   th:href="@{/delete/{nim}(nim=${mhs.nim})}"
                   class="btn btn-delete"
                   >Delete</a
+                >
+                <a
+                  th:href="@{/detail/{nim}(nim=${mhs.nim})}"
+                  class="btn btn-detail"
+                  >Detail</a
                 >
               </td>
             </tr>

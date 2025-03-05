@@ -10,15 +10,21 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.model.Mahasiswa;
+import com.example.model.IRS;
+import com.example.model.MataKuliah;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Controller
 public class MahasiswaController {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    // Existing methods...
+    // Keep all the existing methods from the original MahasiswaController
 
     // Halaman utama dengan pencarian mahasiswa
     @SuppressWarnings("deprecation")
@@ -112,5 +118,39 @@ public class MahasiswaController {
         String sql = "DELETE FROM mahasiswa WHERE nim = ?";
         jdbcTemplate.update(sql, nim);
         return "redirect:/"; // Redirect ke halaman utama setelah penghapusan
+    }
+
+    // New methods for detail functionality
+
+    // Menampilkan detail mahasiswa beserta IRS dan Mata Kuliah yang diambil
+    @GetMapping("/detail/{nim}")
+    public String detail(@PathVariable("nim") String nim, Model model) {
+        try {
+            // Get mahasiswa data
+            String sqlMahasiswa = "SELECT * FROM mahasiswa WHERE nim = ?";
+            Mahasiswa mahasiswa = jdbcTemplate.queryForObject(sqlMahasiswa,
+                    BeanPropertyRowMapper.newInstance(Mahasiswa.class), nim);
+
+            // Get IRS data with course information using JOIN
+            String sqlIrs = "SELECT i.id, i.nim, i.kode_mk, i.semester, i.nilai, " +
+                    "m.nama_mk, m.sks, m.dosen " +
+                    "FROM irs i " +
+                    "JOIN matakuliah m ON i.kode_mk = m.kode_mk " +
+                    "WHERE i.nim = ? " +
+                    "ORDER BY i.semester";
+
+            List<IRS> irsList = jdbcTemplate.query(sqlIrs,
+                    BeanPropertyRowMapper.newInstance(IRS.class), nim);
+
+            // Set data to model
+            model.addAttribute("mahasiswa", mahasiswa);
+            model.addAttribute("irsList", irsList);
+
+            return "detail";
+        } catch (Exception e) {
+            // If student not found or any error occurs
+            model.addAttribute("error", "Error retrieving data for student with NIM " + nim + ": " + e.getMessage());
+            return "error";
+        }
     }
 }

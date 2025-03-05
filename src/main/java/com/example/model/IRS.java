@@ -5,7 +5,6 @@ public class IRS {
     private String nim;
     private String kodeMk;
     private String semester;
-    private String nilai;
 
     // Additional fields for joined data
     private String nama; // Field for mahasiswa.nama
@@ -44,14 +43,6 @@ public class IRS {
 
     public void setSemester(String semester) {
         this.semester = semester;
-    }
-
-    public String getNilai() {
-        return nilai;
-    }
-
-    public void setNilai(String nilai) {
-        this.nilai = nilai;
     }
 
     public String getNama() {

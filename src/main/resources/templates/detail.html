@@ -120,40 +120,6 @@
         color: white;
       }
 
-      .grade {
-        font-weight: 600;
-        border-radius: 4px;
-        padding: 5px 10px;
-        display: inline-block;
-        min-width: 40px;
-        text-align: center;
-      }
-
-      .grade-a {
-        background-color: #28a745;
-        color: white;
-      }
-
-      .grade-b {
-        background-color: #17a2b8;
-        color: white;
-      }
-
-      .grade-c {
-        background-color: #ffc107;
-        color: #212529;
-      }
-
-      .grade-d {
-        background-color: #fd7e14;
-        color: white;
-      }
-
-      .grade-e {
-        background-color: #dc3545;
-        color: white;
-      }
-
       .empty-data {
         text-align: center;
         padding: 20px;
@@ -215,7 +181,6 @@
                 <th>Mata Kuliah</th>
                 <th>SKS</th>
                 <th>Dosen</th>
-                <th>Nilai</th>
               </tr>
             </thead>
             <tbody>
@@ -225,18 +190,6 @@
                 <td th:text="${irs.namaMk}">Algoritma dan Pemrograman</td>
                 <td th:text="${irs.sks}">3</td>
                 <td th:text="${irs.dosen}">Dr. John Doe</td>
-                <td>
-                  <span
-                    th:class="'grade ' + 
-                             (${irs.nilai} == 'A' ? 'grade-a' : 
-                             (${irs.nilai} == 'B' ? 'grade-b' : 
-                             (${irs.nilai} == 'C' ? 'grade-c' : 
-                             (${irs.nilai} == 'D' ? 'grade-d' : 
-                             (${irs.nilai} == 'E' ? 'grade-e' : '')))))"
-                    th:text="${irs.nilai != null ? irs.nilai : '-'}"
-                  >
-                  </span>
-                </td>
               </tr>
             </tbody>
           </table>

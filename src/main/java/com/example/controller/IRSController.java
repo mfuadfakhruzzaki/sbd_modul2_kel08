@@ -30,11 +30,11 @@ public class IRSController {
         List<IRS> irsList = new ArrayList<>();
 
         try {
-            // Use a simpler query with explicit aliases
+            // Updated query to remove the nilai column
             String sql = "SELECT i.id, i.nim, m.nama AS nama, " +
                     "i.kode_mk AS kodeMk, mk.nama_mk AS namaMk, " +
                     "mk.sks AS sks, mk.dosen AS dosen, " +
-                    "i.semester, i.nilai " +
+                    "i.semester " +
                     "FROM irs i " +
                     "JOIN mahasiswa m ON i.nim = m.nim " +
                     "JOIN matakuliah mk ON i.kode_mk = mk.kode_mk " +
@@ -50,7 +50,6 @@ public class IRSController {
                 irs.setSks(rs.getInt("sks"));
                 irs.setDosen(rs.getString("dosen"));
                 irs.setSemester(rs.getString("semester"));
-                irs.setNilai(rs.getString("nilai"));
                 return irs;
             });
 
@@ -102,9 +101,9 @@ public class IRSController {
                 return "redirect:/irs?error=Entry already exists for this student, course, and semester";
             }
 
-            // Insert new IRS entry
-            String sql = "INSERT INTO irs (id, nim, kode_mk, semester, nilai) VALUES (irs_seq.NEXTVAL, ?, ?, ?, ?)";
-            jdbcTemplate.update(sql, irs.getNim(), irs.getKodeMk(), irs.getSemester(), irs.getNilai());
+            // Updated INSERT statement to remove the nilai column
+            String sql = "INSERT INTO irs (id, nim, kode_mk, semester) VALUES (irs_seq.NEXTVAL, ?, ?, ?)";
+            jdbcTemplate.update(sql, irs.getNim(), irs.getKodeMk(), irs.getSemester());
         } catch (Exception e) {
             System.err.println("Error inserting IRS data: " + e.getMessage());
             e.printStackTrace();
@@ -118,15 +117,14 @@ public class IRSController {
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         try {
-            // Get IRS entry
-            String sqlIrs = "SELECT id, nim, kode_mk AS kodeMk, semester, nilai FROM irs WHERE id = ?";
+            // Get IRS entry - updated to remove the nilai column
+            String sqlIrs = "SELECT id, nim, kode_mk AS kodeMk, semester FROM irs WHERE id = ?";
             IRS irs = jdbcTemplate.queryForObject(sqlIrs, (rs, rowNum) -> {
                 IRS item = new IRS();
                 item.setId(rs.getLong("id"));
                 item.setNim(rs.getString("nim"));
                 item.setKodeMk(rs.getString("kodeMk"));
                 item.setSemester(rs.getString("semester"));
-                item.setNilai(rs.getString("nilai"));
                 return item;
             }, id);
 
@@ -157,8 +155,9 @@ public class IRSController {
     @PostMapping("/edit")
     public String edit(IRS irs) {
         try {
-            String sql = "UPDATE irs SET nim = ?, kode_mk = ?, semester = ?, nilai = ? WHERE id = ?";
-            jdbcTemplate.update(sql, irs.getNim(), irs.getKodeMk(), irs.getSemester(), irs.getNilai(), irs.getId());
+            // Updated UPDATE statement to remove the nilai column
+            String sql = "UPDATE irs SET nim = ?, kode_mk = ?, semester = ? WHERE id = ?";
+            jdbcTemplate.update(sql, irs.getNim(), irs.getKodeMk(), irs.getSemester(), irs.getId());
         } catch (Exception e) {
             System.err.println("Error updating IRS data: " + e.getMessage());
             e.printStackTrace();

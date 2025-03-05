@@ -122,7 +122,10 @@ public class MahasiswaController {
 
     // New methods for detail functionality
 
-    // Menampilkan detail mahasiswa beserta IRS dan Mata Kuliah yang diambil
+    // This is the method in MahasiswaController that needs to be updated
+    // Replace the detail method in your MahasiswaController with this updated
+    // version
+
     @GetMapping("/detail/{nim}")
     public String detail(@PathVariable("nim") String nim, Model model) {
         try {
@@ -132,15 +135,25 @@ public class MahasiswaController {
                     BeanPropertyRowMapper.newInstance(Mahasiswa.class), nim);
 
             // Get IRS data with course information using JOIN
-            String sqlIrs = "SELECT i.id, i.nim, i.kode_mk, i.semester, i.nilai, " +
-                    "m.nama_mk, m.sks, m.dosen " +
+            // UPDATED QUERY: Removed the i.nilai column
+            String sqlIrs = "SELECT i.id, i.nim, i.kode_mk as kodeMk, i.semester, " +
+                    "m.nama_mk as namaMk, m.sks, m.dosen " +
                     "FROM irs i " +
                     "JOIN matakuliah m ON i.kode_mk = m.kode_mk " +
                     "WHERE i.nim = ? " +
                     "ORDER BY i.semester";
 
-            List<IRS> irsList = jdbcTemplate.query(sqlIrs,
-                    BeanPropertyRowMapper.newInstance(IRS.class), nim);
+            List<IRS> irsList = jdbcTemplate.query(sqlIrs, (rs, rowNum) -> {
+                IRS irs = new IRS();
+                irs.setId(rs.getLong("id"));
+                irs.setNim(rs.getString("nim"));
+                irs.setKodeMk(rs.getString("kodeMk"));
+                irs.setSemester(rs.getString("semester"));
+                irs.setNamaMk(rs.getString("namaMk"));
+                irs.setSks(rs.getInt("sks"));
+                irs.setDosen(rs.getString("dosen"));
+                return irs;
+            }, nim);
 
             // Set data to model
             model.addAttribute("mahasiswa", mahasiswa);
@@ -150,6 +163,7 @@ public class MahasiswaController {
         } catch (Exception e) {
             // If student not found or any error occurs
             model.addAttribute("error", "Error retrieving data for student with NIM " + nim + ": " + e.getMessage());
+            e.printStackTrace(); // Log the stack trace for debugging
             return "error";
         }
     }

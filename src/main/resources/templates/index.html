@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Mahasiswa</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa; /* Light background color */
+        color: #343a40; /* Dark text color */
+        font-family: "Poppins", sans-serif;
+      }
+
+      .container {
+        margin-top: 60px;
+      }
+
+      h1 {
+        text-align: center;
+        color: #343a40;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      .form-group input {
+        border-radius: 8px; /* Rounded corners */
+        border: 1px solid #ced4da;
+        padding: 12px 15px;
+        font-size: 16px;
+        background-color: #ffffff;
+        color: #495057;
+        transition: border-color 0.3s ease;
+      }
+
+      .form-group input::placeholder {
+        color: #6c757d; /* Lighter color for placeholder */
+      }
+
+      .form-group input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+      }
+
+      .form-group button {
+        border-radius: 8px;
+        background-color: #007bff; /* Blue button */
+        color: white;
+        padding: 12px;
+        font-weight: 600;
+        border: none;
+        width: 100%;
+        margin-left: -2px;
+        transition: background-color 0.3s ease;
+      }
+
+      .form-group button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+
+      .table {
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: #ffffff; /* White table background */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+      }
+
+      .table th,
+      .table td {
+        text-align: center;
+        padding: 15px;
+        font-size: 14px;
+        color: #343a40; /* Dark text color */
+      }
+
+      .thead-light {
+        background-color: #f1f1f1; /* Light gray header */
+        color: #495057;
+        font-weight: 600;
+      }
+
+      .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa; /* Light stripes on rows */
+      }
+
+      /* Custom Button Styles */
+      .btn-custom {
+        border-radius: 8px; /* Rounded corners */
+        padding: 10px 20px;
+        font-size: 14px;
+        width: 100px;
+        margin: 5px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-edit {
+        background-color: #28a745; /* Green for edit button */
+      }
+
+      .btn-edit:hover {
+        background-color: #218838; /* Darker green on hover */
+      }
+
+      .btn-delete {
+        background-color: #dc3545; /* Red for delete button */
+      }
+
+      .btn-delete:hover {
+        background-color: #c82333; /* Darker red on hover */
+      }
+
+      .btn-add {
+        border-radius: 8px;
+        font-weight: 800;
+        padding: 10px;
+        background-color: #17a2b8; /* Cyan for add button */
+      }
+
+      .btn-add:hover {
+        background-color: #138496; /* Darker cyan on hover */
+      }
+
+      /* Responsiveness */
+      @media (max-width: 768px) {
+        .table th,
+        .table td {
+          font-size: 12px;
+          padding: 10px;
+        }
+
+        .form-group input {
+          font-size: 14px;
+        }
+
+        .form-group button {
+          font-size: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Daftar Mahasiswa</h1>
+
+      <!-- Form Pencarian -->
+      <div class="form-group">
+        <form action="/" method="get">
+          <input
+            type="text"
+            class="form-control"
+            id="search"
+            name="search"
+            placeholder="Cari berdasarkan NIM atau Nama"
+            th:value="${search}"
+          />
+          <button type="submit" class="btn btn-custom mt-4">
+            <i class="fas fa-search"></i> Cari
+          </button>
+        </form>
+      </div>
+
+      <!-- Tambah Mahasiswa -->
+      <div class="mb-3 mt-1">
+        <a href="/add" class="btn btn-add w-100">Tambah Mahasiswa</a>
+      </div>
+
+      <!-- Tabel Daftar Mahasiswa -->
+      <div class="table-responsive">
+        <table class="table table-striped mt-3">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">NIM</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Angkatan</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="mhs : ${mahasiswa}">
+              <td th:text="${mhs.nim}"></td>
+              <td th:text="${mhs.nama}"></td>
+              <td th:text="${mhs.angkatan}"></td>
+              <td th:text="${mhs.gender}"></td>
+              <td>
+                <a th:href="@{/edit/{nim}(nim=${mhs.nim})}" class="btn btn-edit"
+                  >Edit</a
+                >
+                <a
+                  th:href="@{/delete/{nim}(nim=${mhs.nim})}"
+                  class="btn btn-delete"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPI"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
